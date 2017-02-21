@@ -2,6 +2,7 @@
 using Microsoft.ApplicationInsights.DataContracts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace helgemahrt.EnhancedAI.Utils
@@ -25,8 +26,8 @@ namespace helgemahrt.EnhancedAI.Utils
             }
 
             // if the telemetry items support properties, include them in the comparison
-            if (typeX.IsAssignableFrom(typeof(ISupportProperties)) &&
-                typeY.IsAssignableFrom(typeof(ISupportProperties)))
+            if (typeX.GetInterfaces().Contains(typeof(ISupportProperties)) &&
+                typeY.GetInterfaces().Contains(typeof(ISupportProperties)))
             {
                 ISupportProperties xp = x as ISupportProperties;
                 ISupportProperties yp = y as ISupportProperties;
@@ -65,7 +66,7 @@ namespace helgemahrt.EnhancedAI.Utils
             // then the name
             sb.Append(obj.GetNameOrMessage());
 
-            if (obj.GetType().IsAssignableFrom(typeof(ISupportProperties)))
+            if (obj.GetType().GetInterfaces().Contains(typeof(ISupportProperties)))
             {
                 ISupportProperties objp = obj as ISupportProperties;
 

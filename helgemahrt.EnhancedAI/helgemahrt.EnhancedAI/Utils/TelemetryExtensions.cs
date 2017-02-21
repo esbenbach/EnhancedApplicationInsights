@@ -37,7 +37,12 @@ namespace helgemahrt.EnhancedAI.Utils
             }
             if (telemetry is ExceptionTelemetry)
             {
-                return (telemetry as ExceptionTelemetry).Message;
+                string msg = (telemetry as ExceptionTelemetry).Message;
+                if (string.IsNullOrEmpty(msg))
+                {
+                    msg = (telemetry as ExceptionTelemetry).Exception.Message;
+                }
+                return msg;
             }
 
             return string.Empty;

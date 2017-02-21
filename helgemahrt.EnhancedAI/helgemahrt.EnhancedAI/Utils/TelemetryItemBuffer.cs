@@ -63,7 +63,7 @@ namespace helgemahrt.EnhancedAI.Utils
                 prefix = $"{telemetry.GetTelemetryTypePrefix()}.";
             }
 
-            if (_telemetryMetrics.ContainsKey(telemetry.GetNameOrMessage()))
+            if (_telemetryMetrics.ContainsKey($"{prefix}{telemetry.GetNameOrMessage()}"))
             {
                 ++_telemetryMetrics[$"{prefix}{telemetry.GetNameOrMessage()}"];
             }
