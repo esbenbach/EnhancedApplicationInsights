@@ -1,5 +1,6 @@
 ﻿using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DataContracts;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,14 +10,23 @@ namespace helgemahrt.EnhancedAI.Utils
     {
         public bool Equals(ITelemetry x, ITelemetry y)
         {
-            // first compare the names
+            // first compare the types
+            Type typeX = x.GetType();
+            Type typeY = y.GetType();
+            if (!Equals(typeX, typeY))
+            {
+                return false;
+            }
+
+            // then compare the names
             if (!string.Equals(x.GetNameOrMessage(), y.GetNameOrMessage()))
             {
                 return false;
             }
 
-            if (x.GetType().IsAssignableFrom(typeof(ISupportProperties)) &&
-                y.GetType().IsAssignableFrom(typeof(ISupportProperties)))
+            // if the telemetry items support properties, include them in the comparison
+            if (typeX.IsAssignableFrom(typeof(ISupportProperties)) &&
+                typeY.IsAssignableFrom(typeof(ISupportProperties)))
             {
                 ISupportProperties xp = x as ISupportProperties;
                 ISupportProperties yp = y as ISupportProperties;
@@ -49,7 +59,10 @@ namespace helgemahrt.EnhancedAI.Utils
             // now construct the basis for our hash
             StringBuilder sb = new StringBuilder();
 
-            // first the name
+            // first append the type
+            sb.Append(obj.GetType().ToString());
+
+            // then the name
             sb.Append(obj.GetNameOrMessage());
 
             if (obj.GetType().IsAssignableFrom(typeof(ISupportProperties)))
