@@ -99,7 +99,7 @@ namespace helgemahrt.EnhancedAI.TelemetryProcessors
             _sendTimer.AutoReset = true;
             _sendTimer.Enabled = true;
         }
-        
+
         /// <summary>
         /// Send the metrics to Application Insights.
         /// </summary>
@@ -107,7 +107,7 @@ namespace helgemahrt.EnhancedAI.TelemetryProcessors
         {
             foreach (var buffer in _telemetryBuffers.Values)
             {
-                buffer.SendMetrics(_next);
+                buffer.SendMetrics();
             }
         }
 
@@ -142,7 +142,7 @@ namespace helgemahrt.EnhancedAI.TelemetryProcessors
                     if (telemetryType == typeof(MetricTelemetry))
                     {
                         // ignore metrics telemetry to avoid an infinite loop
-                        // TODO: thing about what to do with metric telemetry
+                        // TODO: maybe subclass MetricTelemetry to avoid this
                         continue;
                     }
 
@@ -163,12 +163,12 @@ namespace helgemahrt.EnhancedAI.TelemetryProcessors
         {
             if (item is MetricTelemetry)
             {
-                // if we don't ignore metric telemetry items 
-                // TODO: thing about what to do with metric telemetry
+                // if we don't ignore metric telemetry items we'll run into
+                // an infinite loop
                 _next.Process(item);
                 return;
             }
-            
+
             if (_telemetryBuffers.ContainsKey(item.GetType()))
             {
                 if (_telemetryBuffers[item.GetType()].CountTelemetry(item))
