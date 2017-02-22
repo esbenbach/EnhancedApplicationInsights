@@ -81,7 +81,7 @@ namespace helgemahrt.EnhancedAI.TelemetryProcessors
                             try
                             {
                                 // now serialize!
-                                telemetry.Properties[$"{exceptionType.Name}.{property.Name}"] = JsonConvert.SerializeObject(property.GetValue(telemetry.Exception), jsonSettings);
+                                telemetry.Properties[$"{exceptionType.Name}.{property.Name}"] = JsonConvert.SerializeObject(property.GetValue(telemetry.Exception, null), jsonSettings);
                             }
                             catch (Exception ex)
                             {

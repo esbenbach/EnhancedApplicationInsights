@@ -3,11 +3,33 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "helgemahrt.EnhancedAI", "helgemahrt.EnhancedAI\helgemahrt.EnhancedAI.csproj", "{F5287C1B-A0BA-4B69-91BB-189993272070}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SharedCode", "Shared\SharedCode.shproj", "{466E5A0C-0C53-4018-AC83-056F11835BE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "helgemahrt.EnhancedAI.UnitTests", "helgemahrt.EnhancedAI.UnitTests\helgemahrt.EnhancedAI.UnitTests.csproj", "{ABF9326C-DC06-4E7B-B835-AB805223B1C8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "net46", "net46", "{2157DDCE-68A7-4FD9-A7E9-E4ED8425F0D7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "net45", "net45", "{71345998-D8E9-4618-8758-4F8044DEFB3D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "net40", "net40", "{BED331B2-9D3B-4CA7-B8A9-693D225F4AAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "helgemahrt.EnhancedAI", "net46\helgemahrt.EnhancedAI\helgemahrt.EnhancedAI.csproj", "{F5287C1B-A0BA-4B69-91BB-189993272070}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "helgemahrt.EnhancedAI", "net45\helgemahrt.EnhancedAI\helgemahrt.EnhancedAI.csproj", "{32AEF175-8760-47AF-944B-F5A41A302B15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "helgemahrt.EnhancedAI", "net40\helgemahrt.EnhancedAI\helgemahrt.EnhancedAI.csproj", "{AC830EC9-2C0D-4CDC-93AE-7DA5F482D3DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "helgemahrt.EnhancedAI.Net45.UnitTests", "helgemahrt.EnhancedAI.Net45.UnitTests\helgemahrt.EnhancedAI.Net45.UnitTests.csproj", "{930974DF-5EC9-40E2-BF6D-649F3B3299BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "helgemahrt.EnhancedAI.Net40.UnitTests", "helgemahrt.EnhancedAI.Net40.UnitTests\helgemahrt.EnhancedAI.Net40.UnitTests.csproj", "{78B1E9D3-CBF6-4D94-B2ED-373303C1D484}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "helgemahrt.EnhancedAI.Net46.UnitTests", "helgemahrt.EnhancedAI.Net46.UnitTests\helgemahrt.EnhancedAI.Net46.UnitTests.csproj", "{ABF9326C-DC06-4E7B-B835-AB805223B1C8}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Shared\Shared.projitems*{32aef175-8760-47af-944b-f5a41a302b15}*SharedItemsImports = 4
+		Shared\Shared.projitems*{466e5a0c-0c53-4018-ac83-056f11835be8}*SharedItemsImports = 13
+		Shared\Shared.projitems*{ac830ec9-2c0d-4cdc-93ae-7da5f482d3dc}*SharedItemsImports = 4
+		Shared\Shared.projitems*{f5287c1b-a0ba-4b69-91bb-189993272070}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -17,6 +39,22 @@ Global
 		{F5287C1B-A0BA-4B69-91BB-189993272070}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5287C1B-A0BA-4B69-91BB-189993272070}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5287C1B-A0BA-4B69-91BB-189993272070}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32AEF175-8760-47AF-944B-F5A41A302B15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32AEF175-8760-47AF-944B-F5A41A302B15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32AEF175-8760-47AF-944B-F5A41A302B15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32AEF175-8760-47AF-944B-F5A41A302B15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC830EC9-2C0D-4CDC-93AE-7DA5F482D3DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC830EC9-2C0D-4CDC-93AE-7DA5F482D3DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC830EC9-2C0D-4CDC-93AE-7DA5F482D3DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC830EC9-2C0D-4CDC-93AE-7DA5F482D3DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{930974DF-5EC9-40E2-BF6D-649F3B3299BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{930974DF-5EC9-40E2-BF6D-649F3B3299BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{930974DF-5EC9-40E2-BF6D-649F3B3299BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{930974DF-5EC9-40E2-BF6D-649F3B3299BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78B1E9D3-CBF6-4D94-B2ED-373303C1D484}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78B1E9D3-CBF6-4D94-B2ED-373303C1D484}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78B1E9D3-CBF6-4D94-B2ED-373303C1D484}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78B1E9D3-CBF6-4D94-B2ED-373303C1D484}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ABF9326C-DC06-4E7B-B835-AB805223B1C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ABF9326C-DC06-4E7B-B835-AB805223B1C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABF9326C-DC06-4E7B-B835-AB805223B1C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -24,5 +62,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F5287C1B-A0BA-4B69-91BB-189993272070} = {2157DDCE-68A7-4FD9-A7E9-E4ED8425F0D7}
+		{32AEF175-8760-47AF-944B-F5A41A302B15} = {71345998-D8E9-4618-8758-4F8044DEFB3D}
+		{AC830EC9-2C0D-4CDC-93AE-7DA5F482D3DC} = {BED331B2-9D3B-4CA7-B8A9-693D225F4AAB}
 	EndGlobalSection
 EndGlobal

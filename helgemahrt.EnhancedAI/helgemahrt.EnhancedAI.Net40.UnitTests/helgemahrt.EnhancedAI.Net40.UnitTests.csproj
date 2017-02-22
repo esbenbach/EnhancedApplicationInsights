@@ -3,12 +3,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{ABF9326C-DC06-4E7B-B835-AB805223B1C8}</ProjectGuid>
+    <ProjectGuid>{78B1E9D3-CBF6-4D94-B2ED-373303C1D484}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>helgemahrt.EnhancedAI.UnitTests</RootNamespace>
-    <AssemblyName>helgemahrt.EnhancedAI.UnitTests</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <RootNamespace>helgemahrt.EnhancedAI.Net40.UnitTests</RootNamespace>
+    <AssemblyName>helgemahrt.EnhancedAI.Net40.UnitTests</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -56,7 +56,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.ApplicationInsights, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.2.2.0\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.2.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.ApplicationInsights.2.2.0.0.Fakes">
@@ -64,6 +64,10 @@
     </Reference>
     <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
@@ -75,30 +79,40 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
-          <Private>False</Private>
-        </Reference>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="..\helgemahrt.EnhancedAI.Net46.UnitTests\TelemetryProcessors\ExceptionTelemetryEnhancerFixture.cs">
+      <Link>TelemetryProcessors\ExceptionTelemetryEnhancerFixture.cs</Link>
+    </Compile>
+    <Compile Include="..\helgemahrt.EnhancedAI.Net46.UnitTests\TelemetryProcessors\MockTransmissionProcessor.cs">
+      <Link>TelemetryProcessors\MockTransmissionProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\helgemahrt.EnhancedAI.Net46.UnitTests\TelemetryProcessors\TelemetryToMetricsFixture.cs">
+      <Link>TelemetryProcessors\TelemetryToMetricsFixture.cs</Link>
+    </Compile>
+    <Compile Include="..\helgemahrt.EnhancedAI.Net46.UnitTests\Utils\TelemetryComparerFixture.cs">
+      <Link>Utils\TelemetryComparerFixture.cs</Link>
+    </Compile>
+    <Compile Include="..\helgemahrt.EnhancedAI.Net46.UnitTests\Utils\TelemetryExtensionsFixture.cs">
+      <Link>Utils\TelemetryExtensionsFixture.cs</Link>
+    </Compile>
+    <Compile Include="..\helgemahrt.EnhancedAI.Net46.UnitTests\Utils\TelemetryItemBufferFixture.cs">
+      <Link>Utils\TelemetryItemBufferFixture.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TelemetryProcessors\ExceptionTelemetryEnhancerFixture.cs" />
-    <Compile Include="TelemetryProcessors\MockTransmissionProcessor.cs" />
-    <Compile Include="TelemetryProcessors\TelemetryToMetricsFixture.cs" />
-    <Compile Include="Utils\TelemetryComparerFixture.cs" />
-    <Compile Include="Utils\TelemetryExtensionsFixture.cs" />
-    <Compile Include="Utils\TelemetryItemBufferFixture.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\helgemahrt.EnhancedAI\helgemahrt.EnhancedAI.csproj">
-      <Project>{f5287c1b-a0ba-4b69-91bb-189993272070}</Project>
-      <Name>helgemahrt.EnhancedAI</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Fakes Include="Fakes\Microsoft.ApplicationInsights.fakes" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\net40\helgemahrt.EnhancedAI\helgemahrt.EnhancedAI.csproj">
+      <Project>{ac830ec9-2c0d-4cdc-93ae-7da5f482d3dc}</Project>
+      <Name>helgemahrt.EnhancedAI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
