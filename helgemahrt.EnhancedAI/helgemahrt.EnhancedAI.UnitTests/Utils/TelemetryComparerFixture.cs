@@ -1,7 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using helgemahrt.EnhancedAI.Utils;
+﻿using helgemahrt.EnhancedAI.Utils;
 using Microsoft.ApplicationInsights.DataContracts;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace helgemahrt.EnhancedAI.UnitTests.Utils
 {

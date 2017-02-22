@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using helgemahrt.EnhancedAI.Utils;
+﻿using helgemahrt.EnhancedAI.Utils;
 using Microsoft.ApplicationInsights.DataContracts;
-using Microsoft.QualityTools.Testing.Fakes;
 using Microsoft.ApplicationInsights.Fakes;
+using Microsoft.QualityTools.Testing.Fakes;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace helgemahrt.EnhancedAI.UnitTests.Utils
 {
