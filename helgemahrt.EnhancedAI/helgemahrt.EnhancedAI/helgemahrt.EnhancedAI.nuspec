@@ -12,7 +12,7 @@
     <description>$description$</description>
     <releaseNotes>Initial release of the package.</releaseNotes>
     <copyright>Copyright 2017</copyright>
-    <tags>ApplicationInsights Telemetry TelemetryProcessor Exception ExceptionProperties</tags>
+    <tags>ApplicationInsights Telemetry TelemetryProcessor Exception ExceptionProperties AppInsights Analytics</tags>
 	<dependencies>
 		<dependency id="Newtonsoft.Json" version="9.0" />
 		<dependency id="Microsoft.ApplicationInsights.WindowsServer" version="2.2.0" />
