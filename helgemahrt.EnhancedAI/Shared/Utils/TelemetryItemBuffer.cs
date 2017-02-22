@@ -1,5 +1,6 @@
 ﻿using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Channel;
+using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -77,12 +78,13 @@ namespace helgemahrt.EnhancedAI.Utils
         /// <summary>
         /// Sends the metrics data collected to AI and resets the statistics.
         /// </summary>
-        public void SendMetrics()
+        public void SendMetrics(ITelemetryProcessor next)
         {
             foreach (KeyValuePair<string, int> kv in _telemetryMetrics)
             {
                 // send the data
-                _client.TrackMetric(kv.Key, kv.Value);
+                MetricTelemetry metric = new MetricTelemetry(kv.Key, kv.Value);
+                next.Process(metric);
 
                 // reset the counter
                 _telemetryMetrics[kv.Key] = 0;

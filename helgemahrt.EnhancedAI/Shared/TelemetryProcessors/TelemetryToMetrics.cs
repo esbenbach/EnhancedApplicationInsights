@@ -107,7 +107,7 @@ namespace helgemahrt.EnhancedAI.TelemetryProcessors
         {
             foreach (var buffer in _telemetryBuffers.Values)
             {
-                buffer.SendMetrics();
+                buffer.SendMetrics(_next);
             }
         }
 
@@ -142,7 +142,7 @@ namespace helgemahrt.EnhancedAI.TelemetryProcessors
                     if (telemetryType == typeof(MetricTelemetry))
                     {
                         // ignore metrics telemetry to avoid an infinite loop
-                        // TODO: maybe subclass MetricTelemetry to avoid this
+                        // TODO: thing about what to do with metric telemetry
                         continue;
                     }
 
@@ -163,8 +163,8 @@ namespace helgemahrt.EnhancedAI.TelemetryProcessors
         {
             if (item is MetricTelemetry)
             {
-                // if we don't ignore metric telemetry items we'll run into
-                // an infinite loop
+                // if we don't ignore metric telemetry items 
+                // TODO: thing about what to do with metric telemetry
                 _next.Process(item);
                 return;
             }

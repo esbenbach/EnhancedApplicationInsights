@@ -24,64 +24,58 @@ namespace helgemahrt.EnhancedAI.UnitTests.TelemetryProcessors
         [TestMethod]
         public void TestProcess_CustomProperty()
         {
-            using (ShimsContext.Create())
+            // arrange
+            string actual = string.Empty;
+            string expected = "\"Important Property\"";
+            ExceptionTelemetryEnhancer sut = new ExceptionTelemetryEnhancer(new MockTransmissionProcessor((x) =>
             {
-                // arrange
-                string actual = string.Empty;
-                string expected = "\"Important Property\"";
-                ExceptionTelemetryEnhancer sut = new ExceptionTelemetryEnhancer(new MockTransmissionProcessor((x) =>
+                ExceptionTelemetry t = x as ExceptionTelemetry;
+                if (t != null)
                 {
-                    ExceptionTelemetry t = x as ExceptionTelemetry;
-                    if (t != null)
+                    if (t.Properties.ContainsKey("CustomPropertyException.CustomProperty"))
                     {
-                        if (t.Properties.ContainsKey("CustomPropertyException.CustomProperty"))
-                        {
-                            actual = t.Properties["CustomPropertyException.CustomProperty"];
-                        }
+                        actual = t.Properties["CustomPropertyException.CustomProperty"];
                     }
-                }));
-                CustomPropertyException ex = new CustomPropertyException("Exception Message", "Important Property");
-                ExceptionTelemetry telemetry = new ExceptionTelemetry(ex);
+                }
+            }));
+            CustomPropertyException ex = new CustomPropertyException("Exception Message", "Important Property");
+            ExceptionTelemetry telemetry = new ExceptionTelemetry(ex);
 
-                // act
-                sut.Process(telemetry);
+            // act
+            sut.Process(telemetry);
 
-                // assert
-                Assert.AreEqual(expected, actual);
-            }
+            // assert
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void TestProcess_IgnoresDuplicateData()
         {
-            using (ShimsContext.Create())
+            // arrange
+            bool actualStackTrace = true;
+            bool actualMessage = true;
+            bool actualTargetSite = true;
+            bool expected = false;
+            ExceptionTelemetryEnhancer sut = new ExceptionTelemetryEnhancer(new MockTransmissionProcessor((x) =>
             {
-                // arrange
-                bool actualStackTrace = true;
-                bool actualMessage = true;
-                bool actualTargetSite = true;
-                bool expected = false;
-                ExceptionTelemetryEnhancer sut = new ExceptionTelemetryEnhancer(new MockTransmissionProcessor((x) =>
+                ExceptionTelemetry t = x as ExceptionTelemetry;
+                if (t != null)
                 {
-                    ExceptionTelemetry t = x as ExceptionTelemetry;
-                    if (t != null)
-                    {
-                        actualStackTrace = t.Properties.ContainsKey("CustomPropertyException.StackTrace");
-                        actualMessage = t.Properties.ContainsKey("CustomPropertyException.Message");
-                        actualTargetSite = t.Properties.ContainsKey("CustomPropertyException.TargetSite");
-                    }
-                }));
-                CustomPropertyException ex = new CustomPropertyException("Exception Message", "Important Property");
-                ExceptionTelemetry telemetry = new ExceptionTelemetry(ex);
+                    actualStackTrace = t.Properties.ContainsKey("CustomPropertyException.StackTrace");
+                    actualMessage = t.Properties.ContainsKey("CustomPropertyException.Message");
+                    actualTargetSite = t.Properties.ContainsKey("CustomPropertyException.TargetSite");
+                }
+            }));
+            CustomPropertyException ex = new CustomPropertyException("Exception Message", "Important Property");
+            ExceptionTelemetry telemetry = new ExceptionTelemetry(ex);
 
-                // act
-                sut.Process(telemetry);
+            // act
+            sut.Process(telemetry);
 
-                // assert
-                Assert.AreEqual(expected, actualStackTrace);
-                Assert.AreEqual(expected, actualMessage);
-                Assert.AreEqual(expected, actualTargetSite);
-            }
+            // assert
+            Assert.AreEqual(expected, actualStackTrace);
+            Assert.AreEqual(expected, actualMessage);
+            Assert.AreEqual(expected, actualTargetSite);
         }
 
         class TaskPropertyException : Exception
@@ -96,28 +90,25 @@ namespace helgemahrt.EnhancedAI.UnitTests.TelemetryProcessors
         [TestMethod]
         public void TestProcess_IgnoresTaskBaseClass()
         {
-            using (ShimsContext.Create())
+            // arrange
+            bool actual = true;
+            bool expected = false;
+            ExceptionTelemetryEnhancer sut = new ExceptionTelemetryEnhancer(new MockTransmissionProcessor((x) =>
             {
-                // arrange
-                bool actual = true;
-                bool expected = false;
-                ExceptionTelemetryEnhancer sut = new ExceptionTelemetryEnhancer(new MockTransmissionProcessor((x) =>
+                ExceptionTelemetry t = x as ExceptionTelemetry;
+                if (t != null)
                 {
-                    ExceptionTelemetry t = x as ExceptionTelemetry;
-                    if (t != null)
-                    {
-                        actual = t.Properties.ContainsKey("TaskPropertyException.CustomTask");
-                    }
-                }));
-                TaskPropertyException ex = new TaskPropertyException("Exception Message", Task.Delay(1000));
-                ExceptionTelemetry telemetry = new ExceptionTelemetry(ex);
+                    actual = t.Properties.ContainsKey("TaskPropertyException.CustomTask");
+                }
+            }));
+            TaskPropertyException ex = new TaskPropertyException("Exception Message", Task.Delay(1000));
+            ExceptionTelemetry telemetry = new ExceptionTelemetry(ex);
 
-                // act
-                sut.Process(telemetry);
+            // act
+            sut.Process(telemetry);
 
-                // assert
-                Assert.AreEqual(expected, actual);
-            }
+            // assert
+            Assert.AreEqual(expected, actual);
         }
 
         class TemplateTaskPropertyException : Exception
@@ -132,28 +123,25 @@ namespace helgemahrt.EnhancedAI.UnitTests.TelemetryProcessors
         [TestMethod]
         public void TestProcess_IgnoresTaskTemplateClass()
         {
-            using (ShimsContext.Create())
+            // arrange
+            bool actual = true;
+            bool expected = false;
+            ExceptionTelemetryEnhancer sut = new ExceptionTelemetryEnhancer(new MockTransmissionProcessor((x) =>
             {
-                // arrange
-                bool actual = true;
-                bool expected = false;
-                ExceptionTelemetryEnhancer sut = new ExceptionTelemetryEnhancer(new MockTransmissionProcessor((x) =>
+                ExceptionTelemetry t = x as ExceptionTelemetry;
+                if (t != null)
                 {
-                    ExceptionTelemetry t = x as ExceptionTelemetry;
-                    if (t != null)
-                    {
-                        actual = t.Properties.ContainsKey("TaskPropertyException.CustomTask");
-                    }
-                }));
-                TemplateTaskPropertyException ex = new TemplateTaskPropertyException("Exception Message", new Task<int>(() => { return 5; }));
-                ExceptionTelemetry telemetry = new ExceptionTelemetry(ex);
+                    actual = t.Properties.ContainsKey("TaskPropertyException.CustomTask");
+                }
+            }));
+            TemplateTaskPropertyException ex = new TemplateTaskPropertyException("Exception Message", new Task<int>(() => { return 5; }));
+            ExceptionTelemetry telemetry = new ExceptionTelemetry(ex);
 
-                // act
-                sut.Process(telemetry);
+            // act
+            sut.Process(telemetry);
 
-                // assert
-                Assert.AreEqual(expected, actual);
-            }
+            // assert
+            Assert.AreEqual(expected, actual);
         }
 
         class CollectionPropertyException : Exception
@@ -168,34 +156,31 @@ namespace helgemahrt.EnhancedAI.UnitTests.TelemetryProcessors
         [TestMethod]
         public void TestProcess_Collection()
         {
-            using (ShimsContext.Create())
+            // arrange
+            string actual = string.Empty;
+            string expected = "[1,2,3,4,5]";
+            ExceptionTelemetryEnhancer sut = new ExceptionTelemetryEnhancer(new MockTransmissionProcessor((x) =>
             {
-                // arrange
-                string actual = string.Empty;
-                string expected = "[1,2,3,4,5]";
-                ExceptionTelemetryEnhancer sut = new ExceptionTelemetryEnhancer(new MockTransmissionProcessor((x) =>
+                ExceptionTelemetry t = x as ExceptionTelemetry;
+                if (t != null)
                 {
-                    ExceptionTelemetry t = x as ExceptionTelemetry;
-                    if (t != null)
+                    if (t.Properties.ContainsKey("CollectionPropertyException.CustomList"))
                     {
-                        if (t.Properties.ContainsKey("CollectionPropertyException.CustomList"))
-                        {
-                            actual = t.Properties["CollectionPropertyException.CustomList"];
-                        }
+                        actual = t.Properties["CollectionPropertyException.CustomList"];
                     }
-                }));
-                CollectionPropertyException ex = new CollectionPropertyException("Exception Message", new List<int>()
-                {
-                    1, 2, 3, 4, 5
-                });
-                ExceptionTelemetry telemetry = new ExceptionTelemetry(ex);
+                }
+            }));
+            CollectionPropertyException ex = new CollectionPropertyException("Exception Message", new List<int>()
+            {
+                1, 2, 3, 4, 5
+            });
+            ExceptionTelemetry telemetry = new ExceptionTelemetry(ex);
 
-                // act
-                sut.Process(telemetry);
+            // act
+            sut.Process(telemetry);
 
-                // assert
-                Assert.AreEqual(expected, actual);
-            }
+            // assert
+            Assert.AreEqual(expected, actual);
         }
 
         class ArrayPropertyException : Exception
@@ -210,34 +195,31 @@ namespace helgemahrt.EnhancedAI.UnitTests.TelemetryProcessors
         [TestMethod]
         public void TestProcess_Array()
         {
-            using (ShimsContext.Create())
+            // arrange
+            string actual = string.Empty;
+            string expected = "[1,2,3,4,5]";
+            ExceptionTelemetryEnhancer sut = new ExceptionTelemetryEnhancer(new MockTransmissionProcessor((x) =>
             {
-                // arrange
-                string actual = string.Empty;
-                string expected = "[1,2,3,4,5]";
-                ExceptionTelemetryEnhancer sut = new ExceptionTelemetryEnhancer(new MockTransmissionProcessor((x) =>
+                ExceptionTelemetry t = x as ExceptionTelemetry;
+                if (t != null)
                 {
-                    ExceptionTelemetry t = x as ExceptionTelemetry;
-                    if (t != null)
+                    if (t.Properties.ContainsKey("ArrayPropertyException.CustomArray"))
                     {
-                        if (t.Properties.ContainsKey("ArrayPropertyException.CustomArray"))
-                        {
-                            actual = t.Properties["ArrayPropertyException.CustomArray"];
-                        }
+                        actual = t.Properties["ArrayPropertyException.CustomArray"];
                     }
-                }));
-                ArrayPropertyException ex = new ArrayPropertyException("Exception Message", new int[]
-                {
-                    1, 2, 3, 4, 5
-                });
-                ExceptionTelemetry telemetry = new ExceptionTelemetry(ex);
+                }
+            }));
+            ArrayPropertyException ex = new ArrayPropertyException("Exception Message", new int[]
+            {
+                1, 2, 3, 4, 5
+            });
+            ExceptionTelemetry telemetry = new ExceptionTelemetry(ex);
 
-                // act
-                sut.Process(telemetry);
+            // act
+            sut.Process(telemetry);
 
-                // assert
-                Assert.AreEqual(expected, actual);
-            }
+            // assert
+            Assert.AreEqual(expected, actual);
         }
 
         class BaseTaskCollectionPropertyException : Exception
@@ -252,34 +234,31 @@ namespace helgemahrt.EnhancedAI.UnitTests.TelemetryProcessors
         [TestMethod]
         public void TestProcess_IgnoresBaseTaskCollection()
         {
-            using (ShimsContext.Create())
+            // arrange
+            bool actual = true;
+            bool expected = false;
+            ExceptionTelemetryEnhancer sut = new ExceptionTelemetryEnhancer(new MockTransmissionProcessor((x) =>
             {
-                // arrange
-                bool actual = true;
-                bool expected = false;
-                ExceptionTelemetryEnhancer sut = new ExceptionTelemetryEnhancer(new MockTransmissionProcessor((x) =>
+                ExceptionTelemetry t = x as ExceptionTelemetry;
+                if (t != null)
                 {
-                    ExceptionTelemetry t = x as ExceptionTelemetry;
-                    if (t != null)
-                    {
-                        actual = t.Properties.ContainsKey("BaseTaskCollectionPropertyException.TaskList");
-                    }
-                }));
-                BaseTaskCollectionPropertyException ex = new BaseTaskCollectionPropertyException("Exception Message", new List<Task>()
-                {
-                    Task.Delay(1000),
-                    Task.Delay(1000),
-                    Task.Delay(1000),
-                    Task.Delay(1000)
-                });
-                ExceptionTelemetry telemetry = new ExceptionTelemetry(ex);
+                    actual = t.Properties.ContainsKey("BaseTaskCollectionPropertyException.TaskList");
+                }
+            }));
+            BaseTaskCollectionPropertyException ex = new BaseTaskCollectionPropertyException("Exception Message", new List<Task>()
+            {
+                Task.Delay(1000),
+                Task.Delay(1000),
+                Task.Delay(1000),
+                Task.Delay(1000)
+            });
+            ExceptionTelemetry telemetry = new ExceptionTelemetry(ex);
 
-                // act
-                sut.Process(telemetry);
+            // act
+            sut.Process(telemetry);
 
-                // assert
-                Assert.AreEqual(expected, actual);
-            }
+            // assert
+            Assert.AreEqual(expected, actual);
         }
 
         class TemplateTaskCollectionPropertyException : Exception
@@ -294,34 +273,31 @@ namespace helgemahrt.EnhancedAI.UnitTests.TelemetryProcessors
         [TestMethod]
         public void TestProcess_IgnoresTemplateTaskCollection()
         {
-            using (ShimsContext.Create())
+            // arrange
+            bool actual = true;
+            bool expected = false;
+            ExceptionTelemetryEnhancer sut = new ExceptionTelemetryEnhancer(new MockTransmissionProcessor((x) =>
             {
-                // arrange
-                bool actual = true;
-                bool expected = false;
-                ExceptionTelemetryEnhancer sut = new ExceptionTelemetryEnhancer(new MockTransmissionProcessor((x) =>
+                ExceptionTelemetry t = x as ExceptionTelemetry;
+                if (t != null)
                 {
-                    ExceptionTelemetry t = x as ExceptionTelemetry;
-                    if (t != null)
-                    {
-                        actual = t.Properties.ContainsKey("TemplateTaskCollectionPropertyException.TaskList");
-                    }
-                }));
-                TemplateTaskCollectionPropertyException ex = new TemplateTaskCollectionPropertyException("Exception Message", new List<Task<int>>()
-                {
-                    new Task<int>(() => { return 5; }),
-                    new Task<int>(() => { return 5; }),
-                    new Task<int>(() => { return 5; }),
-                    new Task<int>(() => { return 5; })
-                });
-                ExceptionTelemetry telemetry = new ExceptionTelemetry(ex);
+                    actual = t.Properties.ContainsKey("TemplateTaskCollectionPropertyException.TaskList");
+                }
+            }));
+            TemplateTaskCollectionPropertyException ex = new TemplateTaskCollectionPropertyException("Exception Message", new List<Task<int>>()
+            {
+                new Task<int>(() => { return 5; }),
+                new Task<int>(() => { return 5; }),
+                new Task<int>(() => { return 5; }),
+                new Task<int>(() => { return 5; })
+            });
+            ExceptionTelemetry telemetry = new ExceptionTelemetry(ex);
 
-                // act
-                sut.Process(telemetry);
+            // act
+            sut.Process(telemetry);
 
-                // assert
-                Assert.AreEqual(expected, actual);
-            }
+            // assert
+            Assert.AreEqual(expected, actual);
         }
 
         class BaseTaskArrayPropertyException : Exception
@@ -336,34 +312,31 @@ namespace helgemahrt.EnhancedAI.UnitTests.TelemetryProcessors
         [TestMethod]
         public void TestProcess_IgnoresBaseTaskArray()
         {
-            using (ShimsContext.Create())
+            // arrange
+            bool actual = true;
+            bool expected = false;
+            ExceptionTelemetryEnhancer sut = new ExceptionTelemetryEnhancer(new MockTransmissionProcessor((x) =>
             {
-                // arrange
-                bool actual = true;
-                bool expected = false;
-                ExceptionTelemetryEnhancer sut = new ExceptionTelemetryEnhancer(new MockTransmissionProcessor((x) =>
+                ExceptionTelemetry t = x as ExceptionTelemetry;
+                if (t != null)
                 {
-                    ExceptionTelemetry t = x as ExceptionTelemetry;
-                    if (t != null)
-                    {
-                        actual = t.Properties.ContainsKey("BaseTaskArrayPropertyException.TaskArray");
-                    }
-                }));
-                BaseTaskArrayPropertyException ex = new BaseTaskArrayPropertyException("Exception Message", new Task[]
-                {
-                    Task.Delay(1000),
-                    Task.Delay(1000),
-                    Task.Delay(1000),
-                    Task.Delay(1000)
-                });
-                ExceptionTelemetry telemetry = new ExceptionTelemetry(ex);
+                    actual = t.Properties.ContainsKey("BaseTaskArrayPropertyException.TaskArray");
+                }
+            }));
+            BaseTaskArrayPropertyException ex = new BaseTaskArrayPropertyException("Exception Message", new Task[]
+            {
+                Task.Delay(1000),
+                Task.Delay(1000),
+                Task.Delay(1000),
+                Task.Delay(1000)
+            });
+            ExceptionTelemetry telemetry = new ExceptionTelemetry(ex);
 
-                // act
-                sut.Process(telemetry);
+            // act
+            sut.Process(telemetry);
 
-                // assert
-                Assert.AreEqual(expected, actual);
-            }
+            // assert
+            Assert.AreEqual(expected, actual);
         }
 
         class TemplateTaskArrayPropertyException : Exception
@@ -378,34 +351,31 @@ namespace helgemahrt.EnhancedAI.UnitTests.TelemetryProcessors
         [TestMethod]
         public void TestProcess_IgnoresTemplateTaskArray()
         {
-            using (ShimsContext.Create())
+            // arrange
+            bool actual = true;
+            bool expected = false;
+            ExceptionTelemetryEnhancer sut = new ExceptionTelemetryEnhancer(new MockTransmissionProcessor((x) =>
             {
-                // arrange
-                bool actual = true;
-                bool expected = false;
-                ExceptionTelemetryEnhancer sut = new ExceptionTelemetryEnhancer(new MockTransmissionProcessor((x) =>
+                ExceptionTelemetry t = x as ExceptionTelemetry;
+                if (t != null)
                 {
-                    ExceptionTelemetry t = x as ExceptionTelemetry;
-                    if (t != null)
-                    {
-                        actual = t.Properties.ContainsKey("TemplateTaskArrayPropertyException.TaskArray");
-                    }
-                }));
-                TemplateTaskArrayPropertyException ex = new TemplateTaskArrayPropertyException("Exception Message", new Task<int>[]
-                {
-                    new Task<int>(() => { return 5; }),
-                    new Task<int>(() => { return 5; }),
-                    new Task<int>(() => { return 5; }),
-                    new Task<int>(() => { return 5; })
-                });
-                ExceptionTelemetry telemetry = new ExceptionTelemetry(ex);
+                    actual = t.Properties.ContainsKey("TemplateTaskArrayPropertyException.TaskArray");
+                }
+            }));
+            TemplateTaskArrayPropertyException ex = new TemplateTaskArrayPropertyException("Exception Message", new Task<int>[]
+            {
+                new Task<int>(() => { return 5; }),
+                new Task<int>(() => { return 5; }),
+                new Task<int>(() => { return 5; }),
+                new Task<int>(() => { return 5; })
+            });
+            ExceptionTelemetry telemetry = new ExceptionTelemetry(ex);
 
-                // act
-                sut.Process(telemetry);
+            // act
+            sut.Process(telemetry);
 
-                // assert
-                Assert.AreEqual(expected, actual);
-            }
+            // assert
+            Assert.AreEqual(expected, actual);
         }
     }
 }
