@@ -3,6 +3,7 @@ using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -38,11 +39,44 @@ namespace helgemahrt.EnhancedAI.TelemetryProcessors
                 {
                     foreach (PropertyInfo property in exceptionType.GetProperties())
                     {
+                        if (property.PropertyType.IsGenericType)
+                        {
+                            // we're dealing with a generic type
+                            // make sure we're not trying to serialize a list of tasks
+                            bool skip = false;
+                            foreach (Type type in property.PropertyType.GetGenericArguments())
+                            {
+                                if (type.BaseType == typeof(Task) ||
+                                    type == typeof(Task))
+                                {
+                                    skip = true;
+                                    break;
+                                }
+                            }
+
+                            if (skip)
+                            {
+                                continue;
+                            }
+                        }
+
+                        if (property.PropertyType.IsArray)
+                        {
+                            // we're dealing with an array
+                            // make sure we're not trying to serialize an array of tasks
+                            if (property.PropertyType.GetElementType() == typeof(Task) ||
+                                property.PropertyType.GetElementType().BaseType == typeof(Task))
+                            {
+                                continue;
+                            }
+                        }
+
                         // ignore duplicate data (already covered by AI) and tasks
                         if (!string.Equals(property.Name, "StackTrace") &&
                             !string.Equals(property.Name, "Message") &&
                             !string.Equals(property.Name, "TargetSite") &&
-                            property.PropertyType.BaseType != typeof(Task))
+                            property.PropertyType.BaseType != typeof(Task) &&
+                            property.PropertyType != typeof (Task))
                         {
                             try
                             {
