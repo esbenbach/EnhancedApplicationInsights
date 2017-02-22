@@ -1,14 +1,12 @@
-﻿using Microsoft.ApplicationInsights.Extensibility;
+﻿using helgemahrt.EnhancedAI.Utils;
+using Microsoft.ApplicationInsights.Channel;
+using Microsoft.ApplicationInsights.DataContracts;
+using Microsoft.ApplicationInsights.Extensibility;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.ApplicationInsights.Channel;
-using System.Timers;
-using Microsoft.ApplicationInsights.DataContracts;
-using helgemahrt.EnhancedAI.Utils;
 using System.Diagnostics;
+using System.Linq;
+using System.Timers;
 
 namespace helgemahrt.EnhancedAI.TelemetryProcessors
 {
