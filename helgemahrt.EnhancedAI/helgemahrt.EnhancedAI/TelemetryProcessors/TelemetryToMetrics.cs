@@ -139,7 +139,17 @@ namespace helgemahrt.EnhancedAI.TelemetryProcessors
                     string fullName = $"Microsoft.ApplicationInsights.DataContracts.{name}, Microsoft.ApplicationInsights";
                     Type telemetryType = Type.GetType(fullName);
 
-                    _telemetryBuffers[telemetryType] = new TelemetryItemBuffer();
+                    if (telemetryType == typeof(MetricTelemetry))
+                    {
+                        // ignore metrics telemetry to avoid an infinite loop
+                        // TODO: maybe subclass MetricTelemetry to avoid this
+                        continue;
+                    }
+
+                    if (!_telemetryBuffers.ContainsKey(telemetryType))
+                    {
+                        _telemetryBuffers[telemetryType] = new TelemetryItemBuffer();
+                    }
                 }
                 catch (Exception ex)
                 {
