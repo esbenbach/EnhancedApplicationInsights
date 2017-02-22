@@ -1,5 +1,4 @@
-﻿using helgemahrt.EnhancedAI.Utils;
-using Microsoft.ApplicationInsights;
+﻿using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.Extensibility;
 using System.Collections.Concurrent;
