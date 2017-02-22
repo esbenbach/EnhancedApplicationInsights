@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package >
+	<metadata>
+	<id>helgemahrt.EnhancedAI</id>
+	<version>1.0.1</version>
+	<title>Enhanced Application Insights</title>
+	<authors>Helge Mahrt</authors>
+	<owners>Helge Mahrt</owners>
+	<licenseUrl>https://github.com/helgemahrt/EnhancedApplicationInsights/blob/master/LICENSE</licenseUrl>
+	<projectUrl>https://github.com/helgemahrt/EnhancedApplicationInsights</projectUrl>
+	<requireLicenseAcceptance>false</requireLicenseAcceptance>
+	<description>A set of utilities which enhance the collection of telemetry which is sent to Application Insights.</description>
+	<releaseNotes>Added support for .NET 4.0 and .NET 4.5.</releaseNotes>
+	<copyright>Copyright 2017</copyright>
+	<tags>ApplicationInsights Telemetry TelemetryProcessor Exception ExceptionProperties AppInsights Analytics</tags>
+	<dependencies>
+		<dependency id="Newtonsoft.Json" version="9.0.1" />
+		<dependency id="Microsoft.ApplicationInsights.WindowsServer" version="2.2.0" />
+	</dependencies>
+</metadata>
+	<files>
+		<file src="build\net46\helgemahrt.EnhancedAI.dll" target="lib\net46" />
+		<file src="build\net45\helgemahrt.EnhancedAI.dll" target="lib\net45" />
+		<file src="build\net40\helgemahrt.EnhancedAI.dll" target="lib\net40" />
+	</files>
+</package>
