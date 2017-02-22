@@ -51,6 +51,39 @@ namespace helgemahrt.EnhancedAI.UnitTests.TelemetryProcessors
             }
         }
 
+        [TestMethod]
+        public void TestProcess_IgnoresDuplicateData()
+        {
+            using (ShimsContext.Create())
+            {
+                // arrange
+                bool actualStackTrace = true;
+                bool actualMessage = true;
+                bool actualTargetSite = true;
+                bool expected = false;
+                ExceptionTelemetryEnhancer sut = new ExceptionTelemetryEnhancer(new MockTransmissionProcessor((x) =>
+                {
+                    ExceptionTelemetry t = x as ExceptionTelemetry;
+                    if (t != null)
+                    {
+                        actualStackTrace = t.Properties.ContainsKey("CustomPropertyException.StackTrace");
+                        actualMessage = t.Properties.ContainsKey("CustomPropertyException.Message");
+                        actualTargetSite = t.Properties.ContainsKey("CustomPropertyException.TargetSite");
+                    }
+                }));
+                CustomPropertyException ex = new CustomPropertyException("Exception Message", "Important Property");
+                ExceptionTelemetry telemetry = new ExceptionTelemetry(ex);
+
+                // act
+                sut.Process(telemetry);
+
+                // assert
+                Assert.AreEqual(expected, actualStackTrace);
+                Assert.AreEqual(expected, actualMessage);
+                Assert.AreEqual(expected, actualTargetSite);
+            }
+        }
+
         class TaskPropertyException : Exception
         {
             public Task CustomTask { get; set; }
