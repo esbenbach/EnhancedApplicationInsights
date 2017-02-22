@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using helgemahrt.EnhancedAI.TelemetryProcessors;
-using Microsoft.QualityTools.Testing.Fakes;
-using Microsoft.ApplicationInsights.Fakes;
+﻿using helgemahrt.EnhancedAI.TelemetryProcessors;
 using Microsoft.ApplicationInsights.DataContracts;
+using Microsoft.ApplicationInsights.Fakes;
+using Microsoft.QualityTools.Testing.Fakes;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace helgemahrt.EnhancedAI.UnitTests.TelemetryProcessors
 {
