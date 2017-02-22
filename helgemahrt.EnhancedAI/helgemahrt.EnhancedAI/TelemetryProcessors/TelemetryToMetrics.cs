@@ -5,7 +5,6 @@ using Microsoft.ApplicationInsights.Extensibility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Timers;
 
 namespace helgemahrt.EnhancedAI.TelemetryProcessors
@@ -131,7 +130,7 @@ namespace helgemahrt.EnhancedAI.TelemetryProcessors
                 {
                     // make sure we only get the last part after the dot, if there are any
                     string name = type;
-                    if (name.Contains('.'))
+                    if (name.Contains("."))
                     {
                         name = name.Substring(type.LastIndexOf('.'));
                     }
