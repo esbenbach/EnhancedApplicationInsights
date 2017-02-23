@@ -10,7 +10,7 @@
 	<projectUrl>https://github.com/helgemahrt/EnhancedApplicationInsights</projectUrl>
 	<requireLicenseAcceptance>false</requireLicenseAcceptance>
 	<description>A set of utilities which enhance the collection of telemetry which is sent to Application Insights.</description>
-	<releaseNotes>Fighting with an issue regarding how the telemetry processor picks up the instrumentation key.</releaseNotes>
+	<releaseNotes>The TelemetryToMetrics is accounting for multiple AI instances now.</releaseNotes>
 	<copyright>Copyright 2017</copyright>
 	<tags>ApplicationInsights Telemetry TelemetryProcessor Exception ExceptionProperties AppInsights Analytics</tags>
 	<dependencies>
