@@ -1,8 +1,10 @@
 ﻿using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Channel;
+using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace helgemahrt.EnhancedAI.Utils
 {
@@ -28,10 +30,15 @@ namespace helgemahrt.EnhancedAI.Utils
         public bool PrefixMetricsWithType { get; set; } = false;
 
         // the telemetry client we use to send the metrics off to AI
-        private TelemetryClient _client = new TelemetryClient()
+        private TelemetryClient _client;
+
+        public TelemetryItemBuffer(string instrumentationKey)
         {
-            InstrumentationKey = TelemetryConfiguration.Active.InstrumentationKey
-        };
+            _client = new TelemetryClient()
+            {
+                InstrumentationKey = instrumentationKey
+            };
+        }
 
         /// <summary>
         /// Counts the telemetry item.

@@ -13,7 +13,7 @@ namespace helgemahrt.EnhancedAI.UnitTests.Utils
         public void TestCountTelemetry_DetectsDuplicateEvents()
         {
             // arrange
-            TelemetryItemBuffer sut = new TelemetryItemBuffer();
+            TelemetryItemBuffer sut = new TelemetryItemBuffer("");
 
             EventTelemetry item1 = new EventTelemetry("event1");
             item1.Properties["key1"] = "value1";
@@ -41,7 +41,7 @@ namespace helgemahrt.EnhancedAI.UnitTests.Utils
         public void TestCountTelemetry_DetectsUniqueDifference()
         {
             // arrange
-            TelemetryItemBuffer sut = new TelemetryItemBuffer();
+            TelemetryItemBuffer sut = new TelemetryItemBuffer("");
 
             EventTelemetry item1 = new EventTelemetry("event1");
             item1.Properties["key1"] = "value1";
@@ -71,7 +71,7 @@ namespace helgemahrt.EnhancedAI.UnitTests.Utils
             using (ShimsContext.Create())
             {
                 // arrange
-                TelemetryItemBuffer sut = new TelemetryItemBuffer();
+                TelemetryItemBuffer sut = new TelemetryItemBuffer("");
 
                 EventTelemetry item1 = new EventTelemetry("event1");
                 item1.Properties["key1"] = "value1";
@@ -114,7 +114,7 @@ namespace helgemahrt.EnhancedAI.UnitTests.Utils
             using (ShimsContext.Create())
             {
                 // arrange
-                TelemetryItemBuffer sut = new TelemetryItemBuffer();
+                TelemetryItemBuffer sut = new TelemetryItemBuffer("");
                 sut.PrefixMetricsWithType = true;
 
                 EventTelemetry item1 = new EventTelemetry("event1");

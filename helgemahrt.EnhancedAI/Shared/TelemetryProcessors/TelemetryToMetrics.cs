@@ -17,8 +17,12 @@ namespace helgemahrt.EnhancedAI.TelemetryProcessors
         // the next telemetry processor in the chain
         private ITelemetryProcessor _next;
 
-        // buffers for telemetry data
-        private Dictionary<Type, TelemetryItemBuffer> _telemetryBuffers = new Dictionary<Type, TelemetryItemBuffer>();
+        // buffers for telemetry data; we'll have a set of buffers per instrumentation key
+        // which equals to one set of buffers per instance of Application Insights
+        private Dictionary<string, Dictionary<Type, TelemetryItemBuffer>> _telemetryBuffers = new Dictionary<string, Dictionary<Type, TelemetryItemBuffer>>();
+
+        // telemtry types we're tracking
+        private List<Type> _typesToTrack = new List<Type>();
 
         /// <summary>
         /// The interval at which metrics are sent to Application Insights, in seconds.
@@ -45,9 +49,12 @@ namespace helgemahrt.EnhancedAI.TelemetryProcessors
             {
                 _prefixMetricsWithType = value;
 
-                foreach (var buffer in _telemetryBuffers.Values)
+                foreach (var ai in _telemetryBuffers.Values)
                 {
-                    buffer.PrefixMetricsWithType = value;
+                    foreach (var buffer in ai.Values)
+                    {
+                        buffer.PrefixMetricsWithType = value;
+                    }
                 }
             }
         }
@@ -60,7 +67,7 @@ namespace helgemahrt.EnhancedAI.TelemetryProcessors
             {
                 _telemetryTypesToTrack = value;
 
-                SetupBuffers();
+                ClearBuffers();
             }
         }
         private string _telemetryTypesToTrack = null;
@@ -105,13 +112,19 @@ namespace helgemahrt.EnhancedAI.TelemetryProcessors
         /// </summary>
         private void SendMetrics(object sender, ElapsedEventArgs e)
         {
-            foreach (var buffer in _telemetryBuffers.Values)
+            // for all AI instances
+            foreach (var ai in _telemetryBuffers.Values)
             {
-                buffer.SendMetrics();
+                // get all buffers
+                foreach (var buffer in ai.Values)
+                {
+                    // and send all metrics
+                    buffer.SendMetrics();
+                }
             }
         }
 
-        private void SetupBuffers()
+        private void ClearBuffers()
         {
             if (string.IsNullOrEmpty(TelemetryTypesToTrack))
             {
@@ -121,7 +134,11 @@ namespace helgemahrt.EnhancedAI.TelemetryProcessors
 
             // tear down the old buffers, if there are any
             _telemetryBuffers.Clear();
+            UpdateTypesToTrack();
+        }
 
+        private void UpdateTypesToTrack()
+        {
             // types to track is expected to be a list of comma-separated values
             string[] types = TelemetryTypesToTrack.Split(',');
             foreach (string type in types)
@@ -138,26 +155,41 @@ namespace helgemahrt.EnhancedAI.TelemetryProcessors
                     // then add the namespace of the telemetry data contracts
                     string fullName = $"Microsoft.ApplicationInsights.DataContracts.{name}, Microsoft.ApplicationInsights";
                     Type telemetryType = Type.GetType(fullName);
-
-                    if (telemetryType == typeof(MetricTelemetry))
+                    if (telemetryType != null)
                     {
-                        // ignore metrics telemetry to avoid an infinite loop
-                        // TODO: maybe subclass MetricTelemetry to avoid this
-                        continue;
-                    }
-
-                    if (!_telemetryBuffers.ContainsKey(telemetryType))
-                    {
-                        _telemetryBuffers[telemetryType] = new TelemetryItemBuffer()
+                        if (telemetryType == typeof(MetricTelemetry))
                         {
-                            PrefixMetricsWithType = this.PrefixMetricsWithType
-                        };
+                            // ignore metrics telemetry to avoid an infinite loop
+                            // TODO: maybe subclass MetricTelemetry to avoid this
+                            continue;
+                        }
+
+                        _typesToTrack.Add(telemetryType);
                     }
                 }
                 catch (Exception ex)
                 {
                     // something went wrong, no metrics for this one
                     Debug.WriteLine($"Failed to configure telemetry buffer for type {type}: {ex.Message}");
+                }
+            }
+        }
+
+        private void EnsureBuffers(string instrumentationKey)
+        {
+            if (!_telemetryBuffers.ContainsKey(instrumentationKey))
+            {
+                _telemetryBuffers[instrumentationKey] = new Dictionary<Type, TelemetryItemBuffer>();
+
+                foreach (Type telemetryType in _typesToTrack)
+                {
+                    if (!_telemetryBuffers[instrumentationKey].ContainsKey(telemetryType))
+                    {
+                        _telemetryBuffers[instrumentationKey][telemetryType] = new TelemetryItemBuffer(instrumentationKey)
+                        {
+                            PrefixMetricsWithType = this.PrefixMetricsWithType
+                        };
+                    }
                 }
             }
         }
@@ -172,10 +204,16 @@ namespace helgemahrt.EnhancedAI.TelemetryProcessors
                 return;
             }
 
-            if (_telemetryBuffers.ContainsKey(item.GetType()))
+            // do we track this type?
+            if (_typesToTrack.Contains(item.GetType()))
             {
-                if (_telemetryBuffers[item.GetType()].CountTelemetry(item))
+                // get the AI instance this item is supposed to go to and make sure we've got buffers
+                EnsureBuffers(item.Context.InstrumentationKey);
+
+                // count the item
+                if (_telemetryBuffers[item.Context.InstrumentationKey][item.GetType()].CountTelemetry(item))
                 {
+                    // we haven't seen this one before (for this AI instance), so send it off to AI
                     _next.Process(item);
                 }
 
