@@ -148,7 +148,10 @@ namespace helgemahrt.EnhancedAI.TelemetryProcessors
 
                     if (!_telemetryBuffers.ContainsKey(telemetryType))
                     {
-                        _telemetryBuffers[telemetryType] = new TelemetryItemBuffer();
+                        _telemetryBuffers[telemetryType] = new TelemetryItemBuffer()
+                        {
+                            PrefixMetricsWithType = this.PrefixMetricsWithType
+                        };
                     }
                 }
                 catch (Exception ex)
