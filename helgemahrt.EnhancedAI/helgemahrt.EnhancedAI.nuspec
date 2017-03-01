@@ -2,7 +2,7 @@
 <package >
 	<metadata>
 	<id>helgemahrt.EnhancedAI</id>
-	<version>1.0.5</version>
+	<version>1.0.6</version>
 	<title>Enhanced Application Insights</title>
 	<authors>Helge Mahrt</authors>
 	<owners>Helge Mahrt</owners>
@@ -10,7 +10,7 @@
 	<projectUrl>https://github.com/helgemahrt/EnhancedApplicationInsights</projectUrl>
 	<requireLicenseAcceptance>false</requireLicenseAcceptance>
 	<description>A set of utilities which enhance the collection of telemetry which is sent to Application Insights.</description>
-	<releaseNotes>The TelemetryToMetrics is accounting for multiple AI instances now.</releaseNotes>
+	<releaseNotes>Changed the dictionaries used to hold the different buffers per AI instance to be thread safe.</releaseNotes>
 	<copyright>Copyright 2017</copyright>
 	<tags>ApplicationInsights Telemetry TelemetryProcessor Exception ExceptionProperties AppInsights Analytics</tags>
 	<dependencies>

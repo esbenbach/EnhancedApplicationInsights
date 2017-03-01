@@ -3,6 +3,7 @@ using Microsoft.ApplicationInsights.Channel;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Timers;
@@ -19,7 +20,7 @@ namespace helgemahrt.EnhancedAI.TelemetryProcessors
 
         // buffers for telemetry data; we'll have a set of buffers per instrumentation key
         // which equals to one set of buffers per instance of Application Insights
-        private Dictionary<string, Dictionary<Type, TelemetryItemBuffer>> _telemetryBuffers = new Dictionary<string, Dictionary<Type, TelemetryItemBuffer>>();
+        private ConcurrentDictionary<string, ConcurrentDictionary<Type, TelemetryItemBuffer>> _telemetryBuffers = new ConcurrentDictionary<string, ConcurrentDictionary<Type, TelemetryItemBuffer>>();
 
         // telemtry types we're tracking
         private List<Type> _typesToTrack = new List<Type>();
@@ -179,7 +180,7 @@ namespace helgemahrt.EnhancedAI.TelemetryProcessors
         {
             if (!_telemetryBuffers.ContainsKey(instrumentationKey))
             {
-                _telemetryBuffers[instrumentationKey] = new Dictionary<Type, TelemetryItemBuffer>();
+                _telemetryBuffers[instrumentationKey] = new ConcurrentDictionary<Type, TelemetryItemBuffer>();
 
                 foreach (Type telemetryType in _typesToTrack)
                 {
